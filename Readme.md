@@ -1,6 +1,6 @@
 #Leveraging the Office Graph in a custom provider-hosted SharePoint Add-in
 
-![Documents trending in the site](images\020.png)
+![Documents trending in the site](images/020.png)
 
 The following lab illustrates how you can leverage the Office Graph to build a custom provider-hosted SharePoint Add-in that shows documents trending in the site where the add-in is installed.
 
@@ -15,19 +15,19 @@ In order to complete this lab you will need an Office 365 tenant will First Rele
 1. In Visual Studio from the menu choose **File/New/Project...**
 2. In the **New Project** dialog, from the list of installed project template categories, select **Templates/Visual C#/Office/SharePoint**
 3. From the list of available templates select **App for SharePoint**. Name the project **TrendingInThisSite** and click the **OK** button.  
-   ![New project dialog in Visual Studio 2013](images\001.png)
+   ![New project dialog in Visual Studio 2013](images/001.png)
 4. The **New app for SharePoint** wizard will be started to guide you through the process of configuring your add-in
 	1. On the **Specify the app for SharePoint settings** page enter the URL of your developer site and as the host type choose the **Provider-hosted** option and click the **Next >** button.  
-   ![Selecting SharePoint Add-in type](images\002.png)
+   ![Selecting SharePoint Add-in type](images/002.png)
 	2. On the **Specify the web project type** page as a type of web project choose the **ASP.NET MVC Web Application** option and click the **Next >** button.  
-   ![Choosing the type of the web project](images\003.png)
+   ![Choosing the type of the web project](images/003.png)
 	3. On the **Configure authentication setting** page choose the **Use Windows Azure Access Control Service (for SharePoint cloud app)** option and click the **Finish** button.
-   ![Choosing the authentication type of the add-in](images\004.png)
+   ![Choosing the authentication type of the add-in](images/004.png)
 5. The **Connect to SharePoint** dialog will be displayed prompting you to enter your Office 365 credentials. Login with your Office 365 username and password and click the **Sign in** button.  
-   ![Signing in to Office 365](images\005.png)
+   ![Signing in to Office 365](images/005.png)
 
 At this point you should have a Visual Studio solution with two projects: **TrendingInThisSite** representing the SharePoint Add-in and **TrendingInThisSiteWeb** containing the ASP.NET MVC Web Application where the logic of your application will be stored.  
-![Visual Studio solution with two projects](images\006.png)
+![Visual Studio solution with two projects](images/006.png)
 
 ##2. Configuring the add-in projects
 
@@ -37,12 +37,12 @@ First let's configure add-in's permissions. The add-in will render the list of t
 
 1. From the **TrendingInThisSite** project open the **AppManifest.xml** file.
 2. In the **AppManifest.xml** editor change the value of the **Title** field to `Trending in this site`.  
-   ![Changing the add-in's title](images\007.png)
+   ![Changing the add-in's title](images/007.png)
 3. In the list of tabs click the **Permissions** tab and check the **Allow the app to make app-only calls to SharePoint.** checkbox.
 4. To the list of Scopes add the following values:
   * Scope: **Search**, Permission: **QueryAsUserIgnoreAppPrincipal**
   * Scope: **Site Collection**, Permission: **Read**
-  ![Configuring add-in permissions](images\008.png)
+  ![Configuring add-in permissions](images/008.png)
 5. Save and close the **AppManifest.xml** editor
 
 The add-in will be executing Office Graph queries to the SharePoint Search API using the Client-Side Object Model. In order to do this, the web project needs a reference to the **Microsoft.SharePoint.Client.Search.dll** assembly.
@@ -50,12 +50,12 @@ The add-in will be executing Office Graph queries to the SharePoint Search API u
 1. In the **TrendingInThisSiteWeb** project right-click the **References** project item and from the context menu click the **Add reference...** option.
 2. In the **Reference Manager** dialog click the **Browse...** button
 3. In the **Select the files to reference...** dialog browse to the **C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI** folder and from the list of files select the **Microsoft.SharePoint.Client.Search.dll** file and click the **Add** button.  
-   ![Adding the reference to the Microsoft.SharePoint.Client.Search.dll assembly](images\009.png)
+   ![Adding the reference to the Microsoft.SharePoint.Client.Search.dll assembly](images/009.png)
 4. Back in the **Reference Manager** window click the **OK** button to confirm adding the assembly reference to the project.
 5. In the **Solution Explorer** right-click the **TrendingInThisSiteWeb** project and from the context menu choose the **Add/New Folder** option. Name that folder `Extensions`.
 6. Right-click the newly created **Extensions** folder and from the context menu choose the **Add/Class...** option. Name the class `StringCollectionExtensions` and click the **Add** button.
 7. Change the contents of the **StringCollectionExtensions.cs** file to:  
-```
+```cs
 using Microsoft.SharePoint.Client.Search.Query;
 
 namespace TrendingInThisSiteWeb.Extensions {
@@ -71,7 +71,7 @@ namespace TrendingInThisSiteWeb.Extensions {
 }
 ```
 
-	This extension method will make it easier for us later on to specify which Managed Properties we want to retrieve when executing Office Graph queries.
+This extension method will make it easier for us later on to specify which Managed Properties we want to retrieve when executing Office Graph queries.
 
 This concludes configuring the add-in projects and we can proceed with building the add-in.
 
@@ -83,11 +83,11 @@ The add-in that we are building will show content trending in the site where the
 
 1. In the **Solution Explorer** right-click the **TrendingInThisSite** project and from the context menu click the **Add/New Item...** option.
 2. In the **Add New Item** dialog choose the **Client Web Part (Host Web)** item template, in the Name field type `TrendingInThisSite` and click the **Add** button to confirm adding the new item.  
-   ![Adding new Client Web Part to the project](images\010.png)
+   ![Adding new Client Web Part to the project](images/010.png)
 3. In the **Create Client Web Part** dialog keep the default settings and click the **Finish** button.  
-   ![Configuring the page that will serve the App Part](images\011.png)
+   ![Configuring the page that will serve the App Part](images/011.png)
 4. In the **Elements.xml** file open after adding the Client App Part change the **ClientWebPart** element as follows:
-```
+```xml
 <ClientWebPart Name="TrendingInThisSite" Title="Trending in this site" Description="Shows documents trending in this site" DefaultWidth="780" DefaultHeight="250">
 ```
 5. Save and close the **Elements.xml** file.
@@ -98,9 +98,9 @@ The information about documents trending in the site retrieved from the Office G
 
 1. In the **Solution Explorer** open the **TrendingInThisSiteWeb** project, right-click the **Models** folder and from the context menu choose the **Add/Class...** option.
 2. Name the class `TrendingDocument` and click the **Add** button.  
-   ![Adding the TrendingDocument class to the project](images\012.png)
+   ![Adding the TrendingDocument class to the project](images/012.png)
 3. Into the newly added class paste the following contents:  
-```
+```cs
 public class TrendingDocument {
     public string Title { get; set; }
     public string Url { get; set; }
@@ -162,13 +162,13 @@ Following are the steps necessary to complete steps described above.
 
 1. In the **TrendingInThisSiteWeb** project open the **Controllers** folder and open the **TrendingInThisSiteController** class.
 2. Decorate the **Index** method with the **SharePointContextFilter** attribute:  
-```
+```cs
 [SharePointContextFilter]  
 public ActionResult Index() {
 }
 ```
 3. Change the contents of the **Index** method to:    
-```
+```cs
 var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
 
 IEnumerable<TrendingDocument> trendingDocuments = null;
@@ -186,7 +186,7 @@ return View(trendingDocuments);
 ####3.3.2. Retrieving the members of the host web's site members group
 
 1. To the **TrendingInThisSiteController** class add the following method:  
-```
+```cs
 private static string[] GetSiteMembersEmails(SharePointContext spContext) {
     List<string> siteMembersEmails = null;
 
@@ -208,12 +208,12 @@ private static string[] GetSiteMembersEmails(SharePointContext spContext) {
 }
 ```  
 
-    This method is responsible for retrieving the members of the host web's site members group. Because the current might not have sufficient permissions to get the members of that group, the add-in creates app-only context that allows is to retrieve the members of that group using elevated privileges.
+This method is responsible for retrieving the members of the host web's site members group. Because the current might not have sufficient permissions to get the members of that group, the add-in creates app-only context that allows is to retrieve the members of that group using elevated privileges.
 
-    To optimize the performance of this method we retrieve only what is necessary by specifying that for each user we only want to retrieve the e-mail address (`...Users.Include(u => u.Email)`)
+To optimize the performance of this method we retrieve only what is necessary by specifying that for each user we only want to retrieve the e-mail address (`...Users.Include(u => u.Email)`)
 
 2. In the **Index()** method in line 19 add the following statement:  
-```
+```cs
 string[] siteMembersEmails = GetSiteMembersEmails(spContext);
 ```
 3. To the list of **using** statements add `using Microsoft.SharePoint.Client;`
@@ -221,7 +221,7 @@ string[] siteMembersEmails = GetSiteMembersEmails(spContext);
 ####3.3.3. Retrieving actor IDs for the members of the host web's site members group
 
 1. To the **TrendingInThisSiteController** class add the following method:  
-```
+```cs
 private static string[] GetActorIds(ClientContext clientContext, string[] siteMembersEmails) {
     StringBuilder searchQueryText = new StringBuilder();
 
@@ -253,14 +253,14 @@ private static string[] GetActorIds(ClientContext clientContext, string[] siteMe
 }
 ```
 
-	Using the e-mail addresseses retrieved previously this method builds up a new People Search Keyword Query combining the different users using the **OR** operator. Also here the add-in is optimized for performance retrieving only the actor ID (the **DocID** Managed Property) for each found user.
+Using the e-mail addresseses retrieved previously this method builds up a new People Search Keyword Query combining the different users using the **OR** operator. Also here the add-in is optimized for performance retrieving only the actor ID (the **DocID** Managed Property) for each found user.
 
 2. In the **Index()** method in line 20 add the following statement: 
-```
+```cs
 string[] actorIds = GetActorIds(clientContext, siteMembersEmails);
 ```
 3. To the list of **using** statements add:
-```
+```cs
 using System.Text;
 using Microsoft.SharePoint.Client.Search.Query;
 ```  
@@ -268,7 +268,7 @@ using Microsoft.SharePoint.Client.Search.Query;
 ####3.3.4. Retrieving the list of documents trending in the current site
 
 1. To the **TrendingInThisSiteController** class add the following methods:
-```
+```cs
 private static IEnumerable<TrendingDocument> GetTrendingDocuments(ClientContext clientContext, string[] actorIds) {
     // Build Office Graph Query
     string graphQueryText = null;
@@ -355,20 +355,20 @@ private static string GetUserPhotoUrl(string userEmail, string webUrl) {
 }
 ```
 
-	The **GetTrendingDocuments(ClientContext, string[])** method is the core method of the Client Web Part responsible for retrieving documents trending in the current site.
+The **GetTrendingDocuments(ClientContext, string[])** method is the core method of the Client Web Part responsible for retrieving documents trending in the current site.
 
-	The first part of the method is responsible for building the Office Graph query. For each actor passed to the method, a Graph Query Language expression is added to the query such as the documents trending around that actor (**action:1020**) are requested. Additionally the query retrieves the documents trending around the current user (**actor(ME, action:1021)**). The different actors are then combined using an **or** operator so that the query returns a union of the documents trending around the different actors.
+The first part of the method is responsible for building the Office Graph query. For each actor passed to the method, a Graph Query Language expression is added to the query such as the documents trending around that actor (**action:1020**) are requested. Additionally the query retrieves the documents trending around the current user (**actor(ME, action:1021)**). The different actors are then combined using an **or** operator so that the query returns a union of the documents trending around the different actors.
 
-	To determine which documents are trending the query sets the **GraphRankingModel** property and specifies that the Office Graph should sum up the scores for the different documents and actors showing the most trending documents first.
+To determine which documents are trending the query sets the **GraphRankingModel** property and specifies that the Office Graph should sum up the scores for the different documents and actors showing the most trending documents first.
 
-	To have the Office Graph return only documents from the site where the add-in is installed the Office Graph query is extended with a regular Search Keyword Query passing the URL of the site to the **Path** Managed Property.
+To have the Office Graph return only documents from the site where the add-in is installed the Office Graph query is extended with a regular Search Keyword Query passing the URL of the site to the **Path** Managed Property.
 
-	Once the query has been executed, its results are processed and stored as instances of the model we have defined earlier in the lab.
+Once the query has been executed, its results are processed and stored as instances of the model we have defined earlier in the lab.
 
-	To support showing a card for each document the URL of the document preview image and the URL of the photo of the user who has modified the document are passed to the model. Those are built respectively using the **GetPreviewImage(IDictionary<string,object>, string)** and the **GetUserPhotoUrl(string, string)** methods.
+To support showing a card for each document the URL of the document preview image and the URL of the photo of the user who has modified the document are passed to the model. Those are built respectively using the **GetPreviewImage(IDictionary<string,object>, string)** and the **GetUserPhotoUrl(string, string)** methods.
 
 2. In the **Index()** method in line 23 add the following statement:
-```
+```cs
 trendingDocuments = GetTrendingDocuments(clientContext, actorIds);
 ```
 3. To the list of **using** statements add `using TrendingInThisSiteWeb.Extensions;`.
@@ -382,9 +382,9 @@ The Client Web Part is working now and it retrieves documents trending in the cu
 
 1. In the **TrendingInThisSiteWeb** project right-click the **Content** folder and from the context menu choose the **Add/New Item...** option.
 2. In the **Add New Item** dialog, from the list of installed project item template categories select **Visual C#/Web** and from the list of available project item templates select the **Style Sheet** template. Name the item `ClientWebPart.css` and click the **Add** button.  
-	![Adding CSS file for the Client Web Part](images\013.png)
+	![Adding CSS file for the Client Web Part](images/013.png)
 3. Replace the contents of the newly added **ClientWebPart.css** file with:
-```
+```css
 html {
 	font-family: "Segoe UI Semilight","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
     font-size: 0.8em;
@@ -466,7 +466,7 @@ li a img {
 
 1. From the **TrendingInThisSiteWeb** project expand the **Views/TrendingInThisSite** folders and open the **Index.cshtml** file.
 2. Replace the contents of the **Index.cshtml** file with:  
-```
+```html
 @using TrendingInThisSiteWeb.Models;
 @model IEnumerable<TrendingDocument>
 
@@ -505,9 +505,9 @@ li a img {
 
 ```
 
-	When defining the view we first reference the Models defined in the project and set the view's model to the collection of **TrendingDocument** defined earlier in this lab.
+When defining the view we first reference the Models defined in the project and set the view's model to the collection of **TrendingDocument** defined earlier in this lab.
 
-	By iterating through the documents returned by the controller the view renders a card for each trending document.
+By iterating through the documents returned by the controller the view renders a card for each trending document.
 
 3. Save and close the **Index.cshtml** file.
 
@@ -519,20 +519,20 @@ Now that the add-in is complete it's time to see it working. In the following st
 2. When prompted to sign in to Office 365, provide your credentials.  
 	**Important:** The credentials you provide must have sufficient permission to install the add-in and provide it with the necessary permissions. Without this the installation process will fail.
 3. After the installation succeedes Visual Studio will open a new window of your default web browser and redirect you to the page that will prompt you whether you trust the add-in that you have just installed.  
-	![App permissions prompt page](images\014.png)
+	![App permissions prompt page](images/014.png)
 4. Click the **Trust It** button to proceed
 5. You will be redirected to the default add-in page that we haven't changed  
-	![Default add-in page](images\015.png)
+	![Default add-in page](images/015.png)
 6. In the web browser navigate to the site where you deployed the add-in
 7. Click the **Settings** button and from the drop-down menu click the **Edit page** option  
-	![Edit page option highlighted](images\016.png)
+	![Edit page option highlighted](images/016.png)
 8. In a Web Part Zone click the **Add a Web Part** link.
 9. In the **Web Part Gallery** select the **Apps** category. From the list of available add-ins select the **Trending in this site** add-in and click the **Add** button.  
-	![Adding the Trending in this site Client Web Part to the page](images\017.png)
+	![Adding the Trending in this site Client Web Part to the page](images/017.png)
 10. Select the Client Web Part in the Web Part Zone and from its context menu click the **Edit Web Part** option.  
-	![Editing Client Web Part's properts](images\018.png)
+	![Editing Client Web Part's properts](images/018.png)
 11. In the **Web Part Pane** from the **Appearance** section change the value of the **Chrome Type** property to **Title Only** and click the **OK** button to confirm the changes.  
-	![Changing the Chrome Type for the Client Web Part](images\019.png)
+	![Changing the Chrome Type for the Client Web Part](images/019.png)
 12. From the **Ribbon** activate the **Publish** tab and click the **Publish** button.
 13. You should see documents trending in your site
-	![Documents trending in the site](images\020.png)
+	![Documents trending in the site](images/020.png)
