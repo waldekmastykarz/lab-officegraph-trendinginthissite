@@ -1,0 +1,35 @@
+﻿@using TrendingInThisSiteWeb.Models;
+@model IEnumerable<TrendingDocument>
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Documents trending in this site</title>
+    <link href="~/Content/ClientWebPart.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <ul>
+        @foreach (TrendingDocument document in Model) {
+            <li>
+                <a href="@document.Url">
+                    <div class="thumbnail">
+                        <img src="@document.PreviewImageUrl" alt="@document.Title preview" />
+                    </div>
+                    <div class="docinfo">
+                        <img src="@document.LastModifiedByPhotoUrl" alt="@document.LastModifiedByName's photo" class="userphoto">
+                        <span class="username" title="@document.LastModifiedByName">@document.LastModifiedByName</span>
+                        <span class="modifiedDate">@document.LastModifiedTime.ToString("d")</span>
+                    </div>
+                    <div class="title">@document.Title</div>
+                </a>
+            </li>
+        }
+    </ul>
+</body>
+</html>

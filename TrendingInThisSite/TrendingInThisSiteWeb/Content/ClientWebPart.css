@@ -1,0 +1,74 @@
+﻿html {
+	font-family: "Segoe UI Semilight","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 0.8em;
+}
+
+body {
+    margin: 0;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	border: 1px solid #eee;
+	float: left;
+	margin: 0 0.8em 0 0;
+	width: 140px;
+}
+
+li a {
+	text-decoration: none;
+	color: #000;
+}
+
+li a img {
+    border: 0;
+}
+
+.thumbnail {
+	height: 78px;
+	overflow: hidden;
+}
+
+.thumbnail img {
+	width: 100%;
+}
+
+.docinfo {
+	position: relative;
+	top: -20px;
+	left: 5px;
+}
+
+.userphoto {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	float: left;
+	margin-right: 5px;
+}
+
+.username {
+	display: block;
+	padding-top: 24px;
+    width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modifiedDate {
+	display: block;
+	font-size: 0.8em;
+}
+
+.title {
+	font-size: 1.3em;
+	line-height: 1.2;
+	margin-top: -0.4em;
+	padding: 0 0.5em 0.5em 0.5em;
+}
